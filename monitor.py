@@ -219,8 +219,6 @@ def check_intraday_breakouts(symbols, state):
         print("Error in compute_weekly_triggers:", e)
         # optionally continue to the next symbol or return partial state
         return state
-                    
-    return state
 
 def check_weekly_exits(symbols, state):
     """
@@ -328,4 +326,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
