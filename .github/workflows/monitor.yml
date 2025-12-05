@@ -1,0 +1,46 @@
+name: Monitor Stocks (15-min)
+
+on:
+  schedule:
+    # every 15 minutes
+    - cron:  '*/15 4-10 * * 1-5'   # runs 04:00-10:59 UTC => approx 09:30-16:29 IST (covers market), adjust if needed
+  workflow_dispatch:
+
+permissions:
+  contents: write   # allow committing state.json back to repo
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run monitor
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          PER_TRADE_CAPITAL: ${{ secrets.PER_TRADE_CAPITAL }}
+          EXIT_MODE: ${{ secrets.EXIT_MODE }}
+        run: |
+          python monitor.py
+
+      - name: Commit state changes back to repo (if any)
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "github-action"
+          git add state.json || true
+          git commit -m "Update state from scheduled run" || true
+          git push origin HEAD || true
