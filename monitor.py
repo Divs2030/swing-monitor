@@ -216,8 +216,8 @@ def check_intraday_breakouts(symbols, state):
                     send_telegram(message)
                     print("Entry sent for", s)
         except Exception as e:
-        print("Error in compute_weekly_triggers:", e)
-        # optionally continue to the next symbol or return partial state
+                    print("Error in compute_weekly_triggers:", e)
+                    # optionally continue to the next symbol or return partial state
         return state
 
 def check_weekly_exits(symbols, state):
@@ -326,5 +326,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
