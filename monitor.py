@@ -306,7 +306,7 @@ def main():
     state = load_state()
 
     # 1) If Friday after close -> compute triggers and also check weekly exits
-   if friday_after_close(now_ist):
+if friday_after_close(now_ist):
     print("Friday after close: recomputing weekly triggers and checking exits")
 
     state_before = json.dumps(state, sort_keys=True)
@@ -347,6 +347,7 @@ if __name__ == "__main__":
     if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch":
         send_telegram("✅ System Test Successful\nSwing monitor is running correctly.")
     main()
+
 
 
 
