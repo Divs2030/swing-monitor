@@ -325,7 +325,12 @@ def main():
     return
 
 if __name__ == "__main__":
+    # Test signal when workflow is manually triggered
+    if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch":
+        send_telegram("✅ System Test Successful\nSwing monitor is running correctly.")
     main()
+
+
 
 
 
