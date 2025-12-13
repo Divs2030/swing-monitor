@@ -306,29 +306,29 @@ def main():
     state = load_state()
 
     # 1) If Friday after close -> compute triggers and also check weekly exits
-if friday_after_close(now_ist):
-    print("Friday after close: recomputing weekly triggers and checking exits")
+    if friday_after_close(now_ist):
+        print("Friday after close: recomputing weekly triggers and checking exits")
 
-    state_before = json.dumps(state, sort_keys=True)
+        state_before = json.dumps(state, sort_keys=True)
 
-    state = compute_weekly_triggers(symbols, state)
-    state = check_weekly_exits(symbols, state)
-    save_state(state)
-
-    state_after = json.dumps(state, sort_keys=True)
-
-    if state_before == state_after:
-        send_telegram(
-            "🟢 Weekly Scan Completed\n"
-            "Day: Friday\n"
-            "Result: No new entries or exits found."
-        )
-    else:
-        send_telegram(
-            "🟢 Weekly Scan Completed\n"
-            "Day: Friday\n"
-            "Result: State updated (new trigger / entry / exit)."
-        )
+        state = compute_weekly_triggers(symbols, state)
+        state = check_weekly_exits(symbols, state)
+        save_state(state)
+    
+        state_after = json.dumps(state, sort_keys=True)
+    
+        if state_before == state_after:
+            send_telegram(
+                "🟢 Weekly Scan Completed\n"
+                "Day: Friday\n"
+                "Result: No new entries or exits found."
+            )
+        else:
+            send_telegram(
+                "🟢 Weekly Scan Completed\n"
+                "Day: Friday\n"
+                "Result: State updated (new trigger / entry / exit)."
+            )
         return
 
     # 2) If during market hours -> poll intraday and check breakouts
@@ -347,6 +347,7 @@ if __name__ == "__main__":
     if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch":
         send_telegram("✅ System Test Successful\nSwing monitor is running correctly.")
     main()
+
 
 
 
