@@ -329,7 +329,7 @@ if friday_after_close(now_ist):
             "Day: Friday\n"
             "Result: State updated (new trigger / entry / exit)."
         )
-    return
+        return
 
     # 2) If during market hours -> poll intraday and check breakouts
     if is_market_time(now_ist):
@@ -347,6 +347,7 @@ if __name__ == "__main__":
     if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch":
         send_telegram("✅ System Test Successful\nSwing monitor is running correctly.")
     main()
+
 
 
 
